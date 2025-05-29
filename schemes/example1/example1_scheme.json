@@ -1,0 +1,91 @@
+{
+  "nodes": [
+    {
+      "id": "f90e4d0c-b249-4bc1-82b3-ecba096a464c",
+      "type": "CSVReader",
+      "name": "Calibration CSV",
+      "properties": {
+        "filepath": "C:/Users/Artem/Desktop/pipeline_emulator/schemes/example1/calibration_data.csv"
+      },
+      "x": 576.67,
+      "y": 391.20000000000005
+    },
+    {
+      "id": "41aa3a8f-be08-41f4-8f5a-48291dfc3a36",
+      "type": "CSVReader",
+      "name": "Sensor Data CSV",
+      "properties": {
+        "filepath": "C:/Users/Artem/Desktop/pipeline_emulator/schemes/example1/sensor_data.csv"
+      },
+      "x": 575.09,
+      "y": 265.56
+    },
+    {
+      "id": "01fd12ef-10c1-410c-a71b-5b580c70c146",
+      "type": "Merge",
+      "name": "TimeStamp Join",
+      "properties": {
+        "merge_type": "Join",
+        "join_key": "timestamp"
+      },
+      "x": 807.39,
+      "y": 391.41
+    },
+    {
+      "id": "5f68deba-763e-4e22-8c90-604b5a6342cb",
+      "type": "Filter",
+      "name": "Signal Filter",
+      "properties": {
+        "condition": "signal_strength > 15"
+      },
+      "x": 1004.2400000000001,
+      "y": 391.41
+    },
+    {
+      "id": "c3088c27-f6ed-4a6b-b2b0-1ee63326279e",
+      "type": "PythonScript",
+      "name": "GET Adjusted",
+      "properties": {
+        "script": "merged_df = input.data\nmerged_df['adjusted_signal'] = merged_df['signal_strength'] * merged_df['calibration_factor']\noutput = merged_df"
+      },
+      "x": 1209.77,
+      "y": 529.4100000000001
+    },
+    {
+      "id": "2d5a4f95-d468-4c16-9473-bef38a3ade5b",
+      "type": "XYPlot",
+      "name": "XYPlot",
+      "properties": {
+        "x_column": "timestamp",
+        "y_column": "adjusted_signal",
+        "title": "\u0414\u0438\u043d\u0430\u043c\u0438\u043a\u0430 \u043a\u0430\u043b\u0438\u0431\u0440\u043e\u0432\u0430\u043d\u043d\u043e\u0433\u043e \u0441\u0438\u0433\u043d\u0430\u043b\u0430 \u0432\u043e \u0432\u0440\u0435\u043c\u0435\u043d\u0438",
+        "plot_type": "Line",
+        "color": "#ff8040"
+      },
+      "x": 1405.7200000000003,
+      "y": 529.4100000000001
+    }
+  ],
+  "edges": [
+    {
+      "src": "f90e4d0c-b249-4bc1-82b3-ecba096a464c",
+      "dst": "01fd12ef-10c1-410c-a71b-5b580c70c146"
+    },
+    {
+      "src": "41aa3a8f-be08-41f4-8f5a-48291dfc3a36",
+      "dst": "01fd12ef-10c1-410c-a71b-5b580c70c146"
+    },
+    {
+      "src": "01fd12ef-10c1-410c-a71b-5b580c70c146",
+      "dst": "5f68deba-763e-4e22-8c90-604b5a6342cb"
+    },
+    {
+      "src": "5f68deba-763e-4e22-8c90-604b5a6342cb",
+      "dst": "c3088c27-f6ed-4a6b-b2b0-1ee63326279e"
+    },
+    {
+      "src": "c3088c27-f6ed-4a6b-b2b0-1ee63326279e",
+      "dst": "2d5a4f95-d468-4c16-9473-bef38a3ade5b"
+    }
+  ]
+}

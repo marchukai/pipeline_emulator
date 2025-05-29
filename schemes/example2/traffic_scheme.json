@@ -1,0 +1,133 @@
+{
+  "nodes": [
+    {
+      "id": "3fa63d5c-f020-4523-8c0a-117a02d20f01",
+      "type": "PCAPReader",
+      "name": "Traffic PCAP",
+      "properties": {
+        "filepath": "C:/Users/Artem/Desktop/pipeline_emulator/schemes/example2/example.pcap"
+      },
+      "x": 603.1107900000002,
+      "y": 528.8880499999999
+    },
+    {
+      "id": "9f0adf9d-8536-416f-8dce-2d1d9437538a",
+      "type": "TrafficAnalyzer",
+      "name": "TimeSeries Analyzer",
+      "properties": {
+        "metrics": "Time Series"
+      },
+      "x": 997.7301090000001,
+      "y": 669.5451479999999
+    },
+    {
+      "id": "95332192-3065-48cb-8ae6-c9ceeac772cd",
+      "type": "Filter",
+      "name": "UDP Filter",
+      "properties": {
+        "condition": "protocol == 17"
+      },
+      "x": 792.9231480000001,
+      "y": 528.8880499999999
+    },
+    {
+      "id": "1a195ed2-fcd2-4add-8b90-8ed58f48a127",
+      "type": "Filter",
+      "name": "Packet Anomaly",
+      "properties": {
+        "condition": "PacketCount > 20"
+      },
+      "x": 1196.4269410000002,
+      "y": 670.3592270000001
+    },
+    {
+      "id": "a79a851c-264e-46ec-8648-01466327f12b",
+      "type": "XYPlot",
+      "name": "XYPlot",
+      "properties": {
+        "x_column": "timestamp",
+        "y_column": "PacketCount",
+        "title": "\u0414\u0438\u043d\u0430\u043c\u0438\u043a\u0430 \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u0430 \u043f\u0430\u043a\u0435\u0442\u043e\u0432 \u0432\u043e \u0432\u0440\u0435\u043c\u0435\u043d\u0438",
+        "plot_type": "Line",
+        "color": "#1f77b4"
+      },
+      "x": 1416.797062,
+      "y": 670.1733060000001
+    },
+    {
+      "id": "495a0eb8-08fd-42f8-bbdc-201e896cf5eb",
+      "type": "CSVReader",
+      "name": "Known Attacks CSV",
+      "properties": {
+        "filepath": "C:/Users/Artem/Desktop/pipeline_emulator/schemes/example2/known_attacks.csv"
+      },
+      "x": 1196.5424670000002,
+      "y": 823.4171070000001
+    },
+    {
+      "id": "43bf267f-93ab-4c7b-b0ae-b02162e5e291",
+      "type": "Merge",
+      "name": "TimeStamp Join",
+      "properties": {
+        "merge_type": "Join",
+        "join_key": "timestamp"
+      },
+      "x": 1418.3548250000003,
+      "y": 822.5488240000002
+    },
+    {
+      "id": "637e57fd-fcb2-44be-9d53-561a0afc2de7",
+      "type": "Filter",
+      "name": "PacketCount Filter",
+      "properties": {
+        "condition": "PacketCount > 0"
+      },
+      "x": 1630.9361310000008,
+      "y": 822.5488240000002
+    },
+    {
+      "id": "479c1b5f-33c9-443f-8275-a2d220e68673",
+      "type": "PythonScript",
+      "name": "Visualize",
+      "properties": {
+        "script": "output = input.data[['timestamp', 'attack_type', 'severity']]"
+      },
+      "x": 1831.799017000001,
+      "y": 822.5488240000002
+    }
+  ],
+  "edges": [
+    {
+      "src": "3fa63d5c-f020-4523-8c0a-117a02d20f01",
+      "dst": "95332192-3065-48cb-8ae6-c9ceeac772cd"
+    },
+    {
+      "src": "95332192-3065-48cb-8ae6-c9ceeac772cd",
+      "dst": "9f0adf9d-8536-416f-8dce-2d1d9437538a"
+    },
+    {
+      "src": "9f0adf9d-8536-416f-8dce-2d1d9437538a",
+      "dst": "1a195ed2-fcd2-4add-8b90-8ed58f48a127"
+    },
+    {
+      "src": "1a195ed2-fcd2-4add-8b90-8ed58f48a127",
+      "dst": "a79a851c-264e-46ec-8648-01466327f12b"
+    },
+    {
+      "src": "1a195ed2-fcd2-4add-8b90-8ed58f48a127",
+      "dst": "43bf267f-93ab-4c7b-b0ae-b02162e5e291"
+    },
+    {
+      "src": "495a0eb8-08fd-42f8-bbdc-201e896cf5eb",
+      "dst": "43bf267f-93ab-4c7b-b0ae-b02162e5e291"
+    },
+    {
+      "src": "43bf267f-93ab-4c7b-b0ae-b02162e5e291",
+      "dst": "637e57fd-fcb2-44be-9d53-561a0afc2de7"
+    },
+    {
+      "src": "637e57fd-fcb2-44be-9d53-561a0afc2de7",
+      "dst": "479c1b5f-33c9-443f-8275-a2d220e68673"
+    }
+  ]
+}

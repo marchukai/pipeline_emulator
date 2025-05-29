@@ -1,0 +1,108 @@
+{
+  "nodes": [
+    {
+      "id": "f90e4d0c-b249-4bc1-82b3-ecba096a464c",
+      "type": "CSVReader",
+      "name": "CSVReader",
+      "properties": {
+        "filepath": "C:/Users/Artem/Desktop/pipeline_emulator/schemes/cos/cos.csv"
+      },
+      "x": 347.0,
+      "y": 458.0
+    },
+    {
+      "id": "0b9e9408-db82-4f4b-98b8-ed4aa19f53a3",
+      "type": "PythonScript",
+      "name": "PythonScript",
+      "properties": {
+        "script": "output = input.data.copy()\noutput['snr'] = output['signal_strength'] - output['noise_level']\noutput['anomaly'] = (output['bit_error_rate'] > 0.04).astype(int)"
+      },
+      "x": 561.0,
+      "y": 458.0
+    },
+    {
+      "id": "9a8b805f-eda6-4cc6-8cda-914d3093f400",
+      "type": "Filter",
+      "name": "Filter",
+      "properties": {
+        "condition": "snr >60"
+      },
+      "x": 771.0,
+      "y": 457.0
+    },
+    {
+      "id": "c102501e-97b6-469c-8bbc-6ea532c7c058",
+      "type": "Histogram",
+      "name": "Histogram",
+      "properties": {
+        "column": "snr",
+        "bins": 20,
+        "color": "#4C72B0",
+        "title": "Histogram"
+      },
+      "x": 1084.0,
+      "y": 131.0
+    },
+    {
+      "id": "681c0775-7651-4527-b5a4-9f421b696bdb",
+      "type": "XYPlot",
+      "name": "XYPlot",
+      "properties": {
+        "x_column": "timestamp",
+        "y_column": "signal_strength",
+        "title": "XY Plot",
+        "plot_type": "Line",
+        "color": "#1f77b4"
+      },
+      "x": 1090.0,
+      "y": 285.0
+    },
+    {
+      "id": "ddebd7c1-a4a2-40ab-8108-8ef39d3e1616",
+      "type": "CSVReader",
+      "name": "CSVReader",
+      "properties": {
+        "filepath": "C:/Users/Artem/Desktop/pipeline_emulator/schemes/cos/location.csv"
+      },
+      "x": 768.0,
+      "y": 706.0
+    },
+    {
+      "id": "f34db981-f726-4615-90e0-07d8ec183f22",
+      "type": "Merge",
+      "name": "Merge",
+      "properties": {
+        "merge_type": "Join",
+        "join_key": "timestamp"
+      },
+      "x": 1057.0,
+      "y": 587.0
+    }
+  ],
+  "edges": [
+    {
+      "src": "f90e4d0c-b249-4bc1-82b3-ecba096a464c",
+      "dst": "0b9e9408-db82-4f4b-98b8-ed4aa19f53a3"
+    },
+    {
+      "src": "0b9e9408-db82-4f4b-98b8-ed4aa19f53a3",
+      "dst": "9a8b805f-eda6-4cc6-8cda-914d3093f400"
+    },
+    {
+      "src": "9a8b805f-eda6-4cc6-8cda-914d3093f400",
+      "dst": "c102501e-97b6-469c-8bbc-6ea532c7c058"
+    },
+    {
+      "src": "9a8b805f-eda6-4cc6-8cda-914d3093f400",
+      "dst": "681c0775-7651-4527-b5a4-9f421b696bdb"
+    },
+    {
+      "src": "9a8b805f-eda6-4cc6-8cda-914d3093f400",
+      "dst": "f34db981-f726-4615-90e0-07d8ec183f22"
+    },
+    {
+      "src": "ddebd7c1-a4a2-40ab-8108-8ef39d3e1616",
+      "dst": "f34db981-f726-4615-90e0-07d8ec183f22"
+    }
+  ]
+}

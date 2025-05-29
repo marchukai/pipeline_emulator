@@ -1,0 +1,91 @@
+{
+  "nodes": [
+    {
+      "id": "f90e4d0c-b249-4bc1-82b3-ecba096a464c",
+      "type": "CSVReader",
+      "name": "CSVReader",
+      "properties": {
+        "filepath": "C:/Users/Artem/Desktop/pipeline_emulator/schemes/cos/cos.csv"
+      },
+      "x": 343.0,
+      "y": 459.0
+    },
+    {
+      "id": "0b9e9408-db82-4f4b-98b8-ed4aa19f53a3",
+      "type": "PythonScript",
+      "name": "PythonScript",
+      "properties": {
+        "script": "output = input.data.copy()\noutput['snr'] = output['signal_strength'] - output['noise_level']\noutput['anomaly'] = (output['bit_error_rate'] > 0.04).astype(int)"
+      },
+      "x": 561.0,
+      "y": 459.0
+    },
+    {
+      "id": "9a8b805f-eda6-4cc6-8cda-914d3093f400",
+      "type": "Filter",
+      "name": "Filter",
+      "properties": {
+        "condition": "snr >60"
+      },
+      "x": 766.0,
+      "y": 459.0
+    },
+    {
+      "id": "ddebd7c1-a4a2-40ab-8108-8ef39d3e1616",
+      "type": "CSVReader",
+      "name": "CSVReader",
+      "properties": {
+        "filepath": "C:/Users/Artem/Desktop/pipeline_emulator/schemes/cos/location.csv"
+      },
+      "x": 768.0,
+      "y": 706.0
+    },
+    {
+      "id": "f34db981-f726-4615-90e0-07d8ec183f22",
+      "type": "Merge",
+      "name": "Merge",
+      "properties": {
+        "merge_type": "Join",
+        "join_key": "timestamp"
+      },
+      "x": 1057.0,
+      "y": 587.0
+    },
+    {
+      "id": "e3a848d4-c85d-44db-b44d-3a4a7d45ce3b",
+      "type": "XYPlot",
+      "name": "XYPlot",
+      "properties": {
+        "x_column": "bit_error_rate",
+        "y_column": "latitude",
+        "title": "XY Plot",
+        "plot_type": "Scatter",
+        "color": "#1f77b4"
+      },
+      "x": 1272.0,
+      "y": 587.0
+    }
+  ],
+  "edges": [
+    {
+      "src": "f90e4d0c-b249-4bc1-82b3-ecba096a464c",
+      "dst": "0b9e9408-db82-4f4b-98b8-ed4aa19f53a3"
+    },
+    {
+      "src": "0b9e9408-db82-4f4b-98b8-ed4aa19f53a3",
+      "dst": "9a8b805f-eda6-4cc6-8cda-914d3093f400"
+    },
+    {
+      "src": "9a8b805f-eda6-4cc6-8cda-914d3093f400",
+      "dst": "f34db981-f726-4615-90e0-07d8ec183f22"
+    },
+    {
+      "src": "ddebd7c1-a4a2-40ab-8108-8ef39d3e1616",
+      "dst": "f34db981-f726-4615-90e0-07d8ec183f22"
+    },
+    {
+      "src": "f34db981-f726-4615-90e0-07d8ec183f22",
+      "dst": "e3a848d4-c85d-44db-b44d-3a4a7d45ce3b"
+    }
+  ]
+}

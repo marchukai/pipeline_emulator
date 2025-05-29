@@ -1,0 +1,6 @@
+﻿timestamp,attack_type,source_ip,target_ip,protocol,severity
+2019-02-09T14:02:15,DDoS,192.168.1.100,192.168.1.50,TCP,High
+2019-02-09T14:02:30,Brute Force,192.168.1.200,192.168.1.10,SSH,Medium
+2024-03-20T08:25:00Z,SQL Injection,10.0.0.45,172.16.0.200,HTTP,High
+2024-03-20T08:35:00Z,Port Scan,192.168.1.150,N/A,ICMP,Low
+2024-03-20T08:45:00Z,Ransomware,172.16.1.99,192.168.1.200,SMB,Critical
